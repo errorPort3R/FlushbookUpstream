@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<link href='https://fonts.googleapis.com/css?family=Archivo+Black' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="styles.css" media="screen" title="no title" charset="utf-8">
 <head>
     <meta charset="UTF-8">
@@ -7,8 +8,8 @@
   </head>
   <body>
     <div style="position: fixed; z-index: -99; width: 100%; height: 100%">
-  <iframe frameborder="0" height="100%" width="100%"
-    src="https://www.youtube.com/embed/VKVkGZCmWis?rel=0&autoplay=1&start=30&controls=0&loop=1">
+  <iframe frameborder="0" height="110%" width="110%"
+    src="https://www.youtube.com/embed/VKVkGZCmWis?rel=0&autoplay=1&start=30&controls=0">
   </iframe>
 </div>
 <!-- <embed height="0" width="0"
@@ -19,25 +20,33 @@
     <img class = "flushBooklogo"src="flushbooklogo.png" alt="" />
     <div class="mainContainer">
       <form>
-           <input  class = "Facility" type="text" name="facility" placeholder="Facility">
-           <input  class = "Lat" type="text" name="lat" placeholder="Lat">
-           <input  class = "Lon" type="text" name="lon" placeholder="Lon">
-           <input  class = "Capacity" type="text" name="capacity" placeholder="Capacity">
-           <div class = "ratingSystem" >Ease of access</div>
-           <button type="button" name="button"></button>
-     <div class="rating">
-     <span><img src="toilet.png" alt="" />
-     </span>
-     <span><img src="toilet.png" alt="" />
-     </span>
-     <span><img src="toilet.png" alt="" />
-     </span>
-     <span><img src="toilet.png" alt="" />
-     </span>
-     <span><img src="toilet.png" alt="" />
-     </span>
-   </div>
-   <button class = "submit"type="button" name="button">SUBMIT</button>
+           <input  class = "Lat" type="text" name="location" placeholder="Location">
+           <select class = "capacity" name="capacity">
+             <option value="1">1</option>
+             <option value="1 + child">1 + child</option>
+             <option value="1 + child">1 + child</option>
+           </select>
+           <!-- <div class="cleanliness">
+      <h3>Cleanliness</h3>
+      <form class action="">
+  <select name="clean factor">
+    <option value="Nasty">Nasty</option>
+    <option value="tolerable">Tolerable</option>
+    <option value="pretty sweet">Pretty sweet</option>
+    <option value="palace style">Palace style</option>
+  </select>
+  <div class="ease of access">
+    <h3>Ease of Access</h3>
+    <select name="clean factor">
+      <option value="No room">No room</option>
+      <option value="I can fit only my dog in there">I can fit only my dog in there</option>
+      <option value="Enough room">Enough room</option>
+      <option value="I can basically live there">I can basically live there</option>
+    </select>
+</div> -->
+<button class = "submit"type="button" name="button">SUBMIT</button>
+ </div>
+</form>
     </div>
 
   </form>
@@ -45,6 +54,10 @@
       <div id="map"></div>
     </div>
     <div class="locationTracker">
+      <h3 class = "locationFont">Location History</h3>
+      <div class="locationHistory">
+
+      </div>
     </div>
     <script src="node_modules/jquery/dist/jquery.js"></script>
     <script src="map.js"></script>
