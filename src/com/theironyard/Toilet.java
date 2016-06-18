@@ -7,7 +7,6 @@ public class Toilet
 {
     Integer id;
     String facility;
-    //String address;
     double lat;
     double lon;
     int access;

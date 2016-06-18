@@ -14,7 +14,7 @@ public class Main {
     public static void createTables(Connection conn) throws SQLException
     {
         Statement stmt = conn.createStatement();
-        stmt.execute("CREATE TABLE IF NOT EXISTS toilets (id IDENTITY, facility VARCHAR, latitude DOUBLE, longitude DOUBLE, access INT, capacity INT, cleanliness INT, address VARCHAR)");
+        stmt.execute("CREATE TABLE IF NOT EXISTS toilets (id IDENTITY, facility VARCHAR, lat DOUBLE, lon DOUBLE, access INT, capacity INT, cleanliness INT, address VARCHAR)");
     }
 
     public static ArrayList<Toilet> selectToilets(Connection conn) throws SQLException {
@@ -24,8 +24,8 @@ public class Main {
         while (results.next()) {
             Integer id = results.getInt("id");
             String facility = results.getString("facility");
-            double lat = results.getDouble("latitude");
-            double lon = results.getDouble("longitude");
+            double lat = results.getDouble("lat");
+            double lon = results.getDouble("lon");
             int easeOfAccess = results.getInt("access");
             int capacity = results.getInt("capacity");
             int cleanliness = results.getInt("cleanliness");
@@ -58,7 +58,7 @@ public class Main {
         return retToilet;
     }
 
-    public static void insertToilet(Connection conn, Toilet toilet) throws SQLException {
+    public static int insertToilet(Connection conn, Toilet toilet) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO toilets VALUES(NULL, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
         stmt.setString(1, toilet.facility);
         stmt.setDouble(2, toilet.lat);
@@ -68,6 +68,12 @@ public class Main {
         stmt.setInt(6, toilet.cleanliness);
         stmt.setString(7, toilet.address);
         stmt.execute();
+        ResultSet rs = stmt.getGeneratedKeys();
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        return -1;
+
     }
 
     public static void updateToilet(Connection conn, Toilet toilet) throws SQLException
@@ -112,8 +118,8 @@ public class Main {
                     String body = request.body();
                     JsonParser p = new JsonParser();
                     Toilet toilet = p.parse(body, Toilet.class);
-                    insertToilet(conn, toilet);
-                    return selectToilet(conn, toilet.address);
+                    int id = insertToilet(conn, toilet);
+                    return id;
 
                 }
         );
@@ -138,8 +144,5 @@ public class Main {
                     return"";
                 }
         );
-
-
-
     }
 }
