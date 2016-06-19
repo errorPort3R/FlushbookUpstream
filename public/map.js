@@ -4,11 +4,7 @@ function initMap() {
 
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 32.7765, lng: -79.9311},
-<<<<<<< HEAD
-    zoom: 15
-=======
     zoom: 16
->>>>>>> 03424400f97de215b07e8a38b0c8f99c172eb447
   });
 }
 
