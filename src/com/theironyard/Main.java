@@ -68,12 +68,18 @@ public class Main {
         stmt.setInt(6, toilet.cleanliness);
         stmt.setString(7, toilet.address);
         stmt.execute();
-        ResultSet rs = stmt.getGeneratedKeys();
-        if (rs.next()) {
-            return rs.getInt(1);
-        }
-        return -1;
-
+        //
+        //The next 5 lines were taken from code*******************
+        // written for HannibalLecturer, built by Zach Oakes******
+        //                                                      **
+        ResultSet rs = stmt.getGeneratedKeys();//               **
+        if (rs.next()) {//                                      **
+            return rs.getInt(1);//                              **
+        }//                                                     **
+        return -1;//                                            **
+        //********************************************************
+        //********************************************************
+        //
     }
 
     public static void updateToilet(Connection conn, Toilet toilet) throws SQLException

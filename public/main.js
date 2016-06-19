@@ -1,11 +1,19 @@
+// to test on another server;
+// copy paste http://tiny-tiny.herokuapp.com/collections/flushbook into urls
+// on line 37 replace: mainPage.create(JSON.stringify((restroom));
+//            with : mainPage.create(restroom)
+// on line 73 comment out data = JSON.parse(data);
+// also on line 78 try uncommenting the new marker function. this function is what will put the marek on the map
+
+
+
+
 $(document).ready(function() {
     mainPage.init();
 
 })
 // api key: AIzaSyCmljv68nIytDeweNCQXnOGt7_Z3Rz9Neo
 var mainPage = {
-    // name: login name stuff,
-    //url: server url,
     restroom: [],
     // don't forget The commas!!!!!!!!
     init(){
@@ -24,13 +32,15 @@ var mainPage = {
         var restroom = {
           facility:$('input[name="facility"]').val(),
           address: $('input[name="address"]').val(),
-          latitude: $('input[name="lat"]').val(),
-          longitude: $('input[name="lon"]').val(),
+          lat: $('input[name="lat"]').val(),
+          lon: $('input[name="lon"]').val(),
           access: $('input[name="access"]').val(),
           capacity: $('input[name="capacity"]').val(),
           cleanliness: 0,
         }
+        console.log(restroom);
         mainPage.create(JSON.stringify(restroom));
+        mainPage.read();
       })
     },
     //end of events
@@ -59,14 +69,13 @@ var mainPage = {
 
             success(data) {
                 console.log("we got it", data);
+                $('.locationTracker ul').html("");
+
                 data = JSON.parse(data);
+                data.reverse();
                 data.forEach(function(item) {
-          var marker = new google.maps.Marker({
-            position: {lat:  item.lat, lng: item.lon},
-            map: window.map,
-            title: item.facility
-          });
-          $('.listOfToilets').append(`<li>${item.address} ${item.lat} ${item.lon} ${item.access} ${item.capacity} ${item.cleanliness}</li>`)
+          $('.locationTracker ul').append(`<li data-id=${item._id}>${item.facility} ${item.lat} ${item.lon}  ${item.capacity} ${item.cleanliness} <button type="button" name="update">Update</button><button type="button" name="Delete">Delete</button></li>`);
+            // newMarker(item);
         })
       },
             error(err){
@@ -77,9 +86,9 @@ var mainPage = {
   },
 // end of read
 
-    update(){
+    update(updateId){
         $.ajax({
-            url:`/flush`,
+            url:`/flush/`+updateId,
             method: "PUT",
 
             success(data) {
