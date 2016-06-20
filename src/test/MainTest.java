@@ -67,7 +67,7 @@ public class MainTest
         Connection conn = startConnection();
         Toilet a = new Toilet(null,"The Iron Yard",32.1234,-79.2346,1,3,4, "asdf");
         Main.insertToilet(conn, a);
-        Toilet b = Main.selectToilet(conn, a.getAddress());
+        Toilet b = Main.selectToilet(conn, 1);
 
         assertTrue(a.getFacility().equals(b.getFacility()));
 

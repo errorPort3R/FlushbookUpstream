@@ -36,18 +36,18 @@ public class Main {
         return toilets;
     }
 
-    public static Toilet selectToilet(Connection conn, String addy) throws SQLException
+    public static Toilet selectToilet(Connection conn, int identity) throws SQLException
     {
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM toilets WHERE address = ?");
-        stmt.setString(1, addy);
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM toilets WHERE id = ?");
+        stmt.setInt(1, identity);
         ResultSet results = stmt.executeQuery();
         Toilet retToilet = null;
         if (results.next())
         {
             Integer id = results.getInt("id");
             String facility = results.getString("facility");
-            double lat = results.getDouble("latitude");
-            double lon = results.getDouble("longitude");
+            double lat = results.getDouble("lat");
+            double lon = results.getDouble("lon");
             int easeOfAccess = results.getInt("access");
             int capacity = results.getInt("capacity");
             int cleanliness = results.getInt("cleanliness");
@@ -84,7 +84,7 @@ public class Main {
 
     public static void updateToilet(Connection conn, Toilet toilet) throws SQLException
     {
-        PreparedStatement stmt = conn.prepareStatement("UPDATE toilets SET facility=?, latitude=?, longitude=?, access=?, capacity=?, cleanliness=?, address=? WHERE id = ?");
+        PreparedStatement stmt = conn.prepareStatement("UPDATE toilets SET facility=?, lat=?, lon=?, access=?, capacity=?, cleanliness=?, address=? WHERE id = ?");
         stmt.setString(1,toilet.facility);
         stmt.setDouble(2,toilet.lat);
         stmt.setDouble(3,toilet.lon);
