@@ -19,6 +19,9 @@ var mainPage = {
     init(){
       mainPage.styling();
       mainPage.events();
+      setInterval(function() {
+        mainPage.read();
+      },2000);
     },
     styling(){
       mainPage.read();
@@ -39,10 +42,19 @@ var mainPage = {
           cleanliness: 0,
         }
         console.log(restroom);
-        mainPage.create(JSON.stringify(restroom));
+        mainPage.create(restroom);
         mainPage.read();
       })
-    },
+
+    $('.locationTracker ul').on('click', 'li button[name=Delete]', function(event){
+      event.preventDefault();
+      console.log($(this));
+      // console.log($(this).parent);
+      var deleteId = $(this).parent().data('id');
+      console.log(deleteId);
+      mainPage.destroy(deleteId);
+    })
+  },
     //end of events
 
     //crud ajax functions
@@ -51,7 +63,7 @@ var mainPage = {
             contentType: "application/json; charset=utf-8",
             url:"/flush",
             method: "POST",
-            data: restroomObject,
+            data: JSON.stringify(restroomObject),
             success(data) {
                 console.log("created", data);
             },
@@ -74,8 +86,8 @@ var mainPage = {
                 data = JSON.parse(data);
                 data.reverse();
                 data.forEach(function(item) {
-          $('.locationTracker ul').append(`<li data-id=${item._id}>${item.facility} ${item.lat} ${item.lon}  ${item.capacity} ${item.cleanliness} <button type="button" name="update">Update</button><button type="button" name="Delete">Delete</button></li>`);
-            // newMarker(item);
+          $('.locationTracker ul').append(`<li data-id=${item.id}>${item.facility} ${item.lat} ${item.lon}  ${item.capacity} ${item.cleanliness} <button type="button" name="update">Update</button><button type="button" name="Delete">Delete</button></li>`);
+            newMarker(item);
         })
       },
             error(err){
@@ -100,18 +112,35 @@ var mainPage = {
         })
     },
 //end of update
+// var deleteId = mainPage.url + "/" + chatId;
 
     destroy(deleteId) {
         $.ajax({
             url:"/flush/"+deleteId,
             method: "DELETE",
 
-            success(data) {
-                console.log("its gone", data);
+            success: function(data) {
+              console.log("WE DELETED SOMETHING", data);
+              mainPage.read();
             },
-            error(err) {
-                console.error("still there", err);
-            },
+            error: function(err) {
+              console.error("OH CRAP", err);
+            }
           })
         }
-}
+      }
+// deleteChat: function(chatId) {
+//   // find blog to delete from our blog data;
+//   var deleteId = mainPage.url + "/" + chatId;
+//   $.ajax({
+//     url: deleteId,
+//     method: "DELETE",
+//     success: function(data) {
+//       console.log("WE DELETED SOMETHING", data);
+//       mainPage.read();
+//     },
+//     error: function(err) {
+//       console.error("OH CRAP", err);
+//     }
+//   })
+// },
